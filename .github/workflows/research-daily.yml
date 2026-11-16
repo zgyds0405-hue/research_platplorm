@@ -1,0 +1,29 @@
+name: Research daily
+on:
+  schedule:
+    # 19:00 UTC = 03:00 Asia/Shanghai on the following day.
+    - cron: '0 19 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: research-daily
+  cancel-in-progress: false
+jobs:
+  recommend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+      - name: Select three real papers
+        run: node scripts/cloud-daily.js
+      - name: Commit daily feed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add cloud/daily.json
+          git diff --cached --quiet || git commit -m 'Update research daily feed'
+          git push
