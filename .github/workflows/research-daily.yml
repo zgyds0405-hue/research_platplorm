@@ -1,5 +1,8 @@
 name: Research daily
 on:
+  push:
+    paths:
+      - config/research-topics.json
   schedule:
     # 19:00 UTC = 03:00 Asia/Shanghai on the following day.
     - cron: '0 19 * * *'
