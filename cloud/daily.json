@@ -1,1 +1,105 @@
-{"interests":["复杂网络","渗流","同步","演化博弈","传播动力学","地球系统临界转变"],"dailyFeed":null,"history":[],"dismissed":[],"feedback":{}}
+{
+  "interests": [
+    "复杂网络",
+    "渗流",
+    "同步",
+    "演化博弈",
+    "传播动力学",
+    "地球系统临界转变"
+  ],
+  "dailyFeed": {
+    "day": "2026-11-16",
+    "papers": [
+      {
+        "id": "https://openalex.org/W7104253023",
+        "title": "Selective sparsity–enhanced synchronization in disordered semiconductor laser networks",
+        "authors": "Li-Li Ye, Nathan Vigne, Fan-Yi Lin, Hui W. Cao, Ying-Cheng Lai",
+        "year": 2026,
+        "date": "2026-10-06",
+        "venue": "Proceedings of the National Academy of Sciences",
+        "doi": "https://doi.org/10.1073/pnas.2612387123",
+        "url": "https://doi.org/10.1073/pnas.2612387123",
+        "topic": "同步",
+        "abstract": "Biological networks tend to leverage selective sparsity as an economic strategy to optimize function while minimizing wiring costs. In contrast, achieving synchronization in engineered systems such as semiconductor laser arrays is traditionally expected to require resource-intensive coupling to overcome intrinsic frequency disorders. We demonstrate that selectively coupled sparse networks can outperform fully connected architectures, achieving near-complete synchronization with a significantly reduced coupling budget. Using an evolutionary algorithm, we identify a \"pairing opposites\" principle: optimal structures specifically prioritize connections between oscillators with the largest opposite frequency detuning. This topology neutralizes dynamical interference induced by redundant links, leading to stable synchronization. We formalize this mechanism through a thermodynamic potential framework, mapping time-delayed phase dynamics to an energy landscape where optimal sparsity prunes additional states to stabilize global phase-locking. Furthermore, we show that the optimal connectivity scales inversely with system size. This principle provides a resource-efficient blueprint for synchronizing and stabilizing diverse complex networks, from photonic arrays to neuromorphic hardware.",
+        "source": "OpenAlex",
+        "citedBy": 6,
+        "classic": false,
+        "summary": "",
+        "summaryStatus": "pending",
+        "authorImpact": 21083,
+        "recommendedAt": "2026-11-16T03:29:08.418Z",
+        "reason": "近期新作 · Proceedings of the National Academy of Sciences · 论文引用 6 · 作者引用最高 21083"
+      },
+      {
+        "id": "https://openalex.org/W7166575917",
+        "title": "Janus Percolation in Anisotropic Limited-Degree Networks",
+        "authors": "Anonymous, N. A. M. Araújo, L. de Arcangelis, Alessandro Sarracino, Eugenio Lippiello",
+        "year": 2026,
+        "date": "2026-06-29",
+        "venue": "Physical Review Letters",
+        "doi": "https://doi.org/10.1103/xyx5-3tz3",
+        "url": "https://doi.org/10.1103/xyx5-3tz3",
+        "topic": "渗流",
+        "abstract": "Many real-world infrastructures, from sensor and road networks to power grids, are spatially embedded and anisotropic, with constraints on the maximum number of links each node can establish. Such systems can be represented as anisotropic limited-degree networks, in which each node forms at most q outgoing links preferentially oriented along a fixed direction. By increasing the node density σ at fixed q, we uncover a reentrant percolation transition: a giant strongly connected component emerges, but unexpectedly disintegrates again at high densities. This counterintuitive behavior implies that adding nodes, normally expected to enhance robustness, can instead reduce mutual accessibility and weaken global connectivity. The critical behavior displays two coexisting \"faces\": random-percolation scaling along the preferred direction and directed-percolation scaling transversely, therefore we name this phenomenon \"Janus percolation,\" in analogy with the dual-faced Roman god. These findings demonstrate that anisotropy and degree limitation can jointly induce a novel reentrant connectivity with mixed universality that bridges the universality classes of random and directed percolation, providing fresh insight into how structural constraints shape connectivity and resilience in spatial networks.",
+        "source": "OpenAlex",
+        "citedBy": 3,
+        "classic": false,
+        "summary": "",
+        "summaryStatus": "pending",
+        "authorImpact": 3259,
+        "recommendedAt": "2026-11-16T03:29:08.418Z",
+        "reason": "近期新作 · Physical Review Letters · 论文引用 3 · 作者引用最高 3259"
+      },
+      {
+        "id": "https://openalex.org/W2073141004",
+        "title": "Tipping elements in the Earth's climate system",
+        "authors": "Timothy M. Lenton, Hermann Held, Elmar Kriegler, Jim W. Hall, Wolfgang Lucht, Stefan Rahmstorf",
+        "year": 2008,
+        "date": "2008-02-07",
+        "venue": "Proceedings of the National Academy of Sciences",
+        "doi": "https://doi.org/10.1073/pnas.0705414105",
+        "url": "https://doi.org/10.1073/pnas.0705414105",
+        "topic": "地球系统临界转变",
+        "abstract": "The term \"tipping point\" commonly refers to a critical threshold at which a tiny perturbation can qualitatively alter the state or development of a system. Here we introduce the term \"tipping element\" to describe large-scale components of the Earth system that may pass a tipping point. We critically evaluate potential policy-relevant tipping elements in the climate system under anthropogenic forcing, drawing on the pertinent literature and a recent international workshop to compile a short list, and we assess where their tipping points lie. An expert elicitation is used to help rank their sensitivity to global warming and the uncertainty about the underlying physical mechanisms. Then we explain how, in principle, early warning systems could be established to detect the proximity of some tipping points.",
+        "source": "OpenAlex",
+        "citedBy": 4232,
+        "classic": true,
+        "summary": "",
+        "summaryStatus": "pending",
+        "authorImpact": 75778,
+        "recommendedAt": "2026-11-16T03:29:08.418Z",
+        "reason": "经典高引 · Proceedings of the National Academy of Sciences · 论文引用 4232 · 作者引用最高 75778"
+      }
+    ],
+    "generatedAt": "2026-11-16T03:29:08.418Z",
+    "model": "gpt-6.1-sol"
+  },
+  "history": [
+    {
+      "id": "https://openalex.org/W7104253023",
+      "doi": "https://doi.org/10.1073/pnas.2612387123",
+      "title": "Selective sparsity–enhanced synchronization in disordered semiconductor laser networks",
+      "topic": "同步",
+      "classic": false,
+      "recommendedAt": "2026-11-16T03:29:08.418Z"
+    },
+    {
+      "id": "https://openalex.org/W7166575917",
+      "doi": "https://doi.org/10.1103/xyx5-3tz3",
+      "title": "Janus Percolation in Anisotropic Limited-Degree Networks",
+      "topic": "渗流",
+      "classic": false,
+      "recommendedAt": "2026-11-16T03:29:08.418Z"
+    },
+    {
+      "id": "https://openalex.org/W2073141004",
+      "doi": "https://doi.org/10.1073/pnas.0705414105",
+      "title": "Tipping elements in the Earth's climate system",
+      "topic": "地球系统临界转变",
+      "classic": true,
+      "recommendedAt": "2026-11-16T03:29:08.418Z"
+    }
+  ],
+  "dismissed": [],
+  "feedback": {}
+}
