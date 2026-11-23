@@ -53,12 +53,12 @@ def evolve(online, stationary, elapsed_in_relaxation_times, rng):
     return rng.random(M) < probability
 
 
-def simulate():
+def simulate(seed=SEED):
     rows = []
     for k in DEGREES:
         for graph_id in range(GRAPHS):
             graph_stream, static_stream, dynamic_stream = np.random.SeedSequence(
-                [SEED, k, graph_id]).spawn(3)
+                [seed, k, graph_id]).spawn(3)
             graph = nx.fast_gnp_random_graph(M, k / (M - 1), seed=int(graph_stream.generate_state(1)[0]))
             adj = nx.to_scipy_sparse_array(graph, format="csr", dtype=np.int8)
             static = np.random.default_rng(static_stream)

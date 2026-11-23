@@ -19,3 +19,7 @@ python percolation.py
 ```
 
 replicates.csv 保存每张底图、每个概率点的平均 L₁/M 和实际在线比例。summary.csv 保存总体均值和区间。固定随机种子为 20261124。
+
+## 稳态最大连通分量对比表
+
+安装 XlsxWriter 后执行 `python steady_table.py`，使用独立种子 813402 重新仿真。tables/ 中的 Excel 与 CSV 含 471 行配对结果（每个 k 有 157 个概率），提供平均最大连通分量的节点数、占比和相对误差。误差以传统组均值为分母，取两组均值差的绝对值。CSV 的误差列以百分数记录。
