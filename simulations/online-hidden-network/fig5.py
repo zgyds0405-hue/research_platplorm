@@ -35,42 +35,50 @@ def plot_figure5(output):
         "axes.spines.right": False, "svg.fonttype": "none", "pdf.fonttype": 42,
         "xtick.labelsize": 6.4, "ytick.labelsize": 6.4, "axes.axisbelow": True,
     }):
-        fig = plt.figure(figsize=(7.2, 7.15), facecolor="white")
-        fig.text(.085, .975, "Online network size over time", weight="bold", fontsize=12, va="top")
-        handles = [Line2D([], [], color=c, lw=1.4, label=f"M = {n:,}") for c, n in zip(colors, sizes)]
-        handles.append(Line2D([], [], color=theory, lw=.8, ls="--", label="Theoretical mean"))
-        fig.legend(handles=handles, loc="upper left", bbox_to_anchor=(.08, .945),
-                   ncol=4, frameon=False, borderaxespad=0, handlelength=2.8)
-        for block, initial_fraction in enumerate((1.0, 0.1)):
-            rng = np.random.default_rng(2026112305 + block)
-            top = .845 - block * .44
-            fig.text(.085, top + .039, f"{initial_fraction:.0%} initially online",
-                     fontsize=9, weight="bold")
-            grid = fig.add_gridspec(2, 3, left=.086, right=.98, top=top,
-                                    bottom=top-.318, wspace=.24, hspace=.40)
-            for row, online_rate in enumerate((.010, .020)):
-                for col, hidden_rate in enumerate((.005, .010, .015)):
-                    ax = fig.add_subplot(grid[row, col])
-                    rate = online_rate + hidden_rate
-                    p = online_rate / rate
-                    for total, color in zip(sizes, colors):
-                        initial = round(initial_fraction * total)
-                        counts = simulate_counts(rng, total, initial, online_rate, hidden_rate, times)
-                        mean = total * p + (initial - total * p) * np.exp(-rate * times)
-                        ax.plot(times, counts[:, 0], color=color, lw=.75)
-                        ax.plot(times, mean, color=theory, lw=.48, ls=(0, (3, 4)))
-                    label = chr(ord("a") + block * 6 + 3 * row + col)
-                    ax.set_title(rf"$\mathbf{{{label}}}$   $\lambda={online_rate:.3f},\ \mu={hidden_rate:.3f}$",
-                                 fontsize=7.2, loc="left", pad=4)
-                    ax.set(xscale="log", xlim=(.1, 10000), ylim=(0, 6300),
-                           yticks=[0, 2000, 4000, 6000], xticks=[.1, 1, 10, 100, 1000, 10000])
-                    ax.minorticks_off()
-                    ax.tick_params(width=.5, length=2, pad=2, labelleft=(col == 0), labelbottom=(row == 1))
-                    ax.grid(axis="y", color="#dadada", lw=.4)
-                    if col == 0:
-                        ax.set_ylabel("Online nodes", fontsize=7)
-                    if row == 1 and col == 1:
-                        ax.set_xlabel("Time, $t$", fontsize=7)
+        fig, axes = plt.subplots(2, 3, figsize=(7.2, 4.65), facecolor="white")
+        fig.subplots_adjust(left=.092, right=.985, top=.755, bottom=.115, wspace=.25, hspace=.45)
+        fig.text(.092, .965, "Online network size over time", weight="bold", fontsize=12, va="top")
+        low_color = "#CC79A7"
+        low_theory = "#572749"
+        scenarios = [(n, n, c) for n, c in zip(sizes, colors)]
+        scenarios.append((4000, 400, low_color))
+        handles = [Line2D([], [], color=c, lw=1.6, label=f"{initial:,} / {n:,} online")
+                   for n, initial, c in scenarios]
+        handles.extend([
+            Line2D([], [], color=theory, lw=.8, ls="--", label="Mean, full start"),
+            Line2D([], [], color=low_theory, lw=.8, ls=":", label="Mean, 10% start"),
+        ])
+        order = (0, 3, 1, 4, 2, 5)
+        fig.legend(handles=[handles[i] for i in order], loc="upper left", bbox_to_anchor=(.086, .903),
+                   ncol=3, frameon=False, borderaxespad=0, handlelength=2.8, columnspacing=1.8,
+                   fontsize=7)
+        full_rng = np.random.default_rng(2026112305)
+        low_rng = np.random.default_rng(2026112306)
+        for row, online_rate in enumerate((.010, .020)):
+            for col, hidden_rate in enumerate((.005, .010, .015)):
+                ax = axes[row, col]
+                rate = online_rate + hidden_rate
+                p = online_rate / rate
+                for total, initial, color in scenarios:
+                    full = initial == total
+                    rng = full_rng if full else low_rng
+                    counts = simulate_counts(rng, total, initial, online_rate, hidden_rate, times)
+                    mean = total * p + (initial - total * p) * np.exp(-rate * times)
+                    ax.plot(times, counts[:, 0], color=color, lw=.8)
+                    ax.plot(times, mean, color=theory if full else low_theory,
+                            lw=.55, ls=(0, (3, 4)) if full else ":")
+                label = chr(ord("a") + 3 * row + col)
+                ax.set_title(rf"$\mathbf{{{label}}}$   $\lambda={online_rate:.3f},\ \mu={hidden_rate:.3f}$",
+                             fontsize=7.2, loc="left", pad=4)
+                ax.set(xscale="log", xlim=(.1, 10000), ylim=(0, 6300),
+                       yticks=[0, 2000, 4000, 6000], xticks=[.1, 1, 10, 100, 1000, 10000])
+                ax.minorticks_off()
+                ax.tick_params(width=.5, length=2, pad=2, labelleft=(col == 0), labelbottom=(row == 1))
+                ax.grid(axis="y", color="#dadada", lw=.4)
+                if col == 0:
+                    ax.set_ylabel("Online nodes", fontsize=7)
+                if row == 1 and col == 1:
+                    ax.set_xlabel("Time, $t$", fontsize=7)
         for ext in ("pdf", "svg", "png"):
             fig.savefig(output / f"Fig5.{ext}", dpi=600)
         plt.close(fig)
