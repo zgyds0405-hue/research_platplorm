@@ -53,10 +53,10 @@ def evolve(online, stationary, elapsed_in_relaxation_times, rng):
     return rng.random(M) < probability
 
 
-def simulate(seed=SEED):
+def simulate(seed=SEED, graph_count=GRAPHS):
     rows = []
     for k in DEGREES:
-        for graph_id in range(GRAPHS):
+        for graph_id in range(graph_count):
             graph_stream, static_stream, dynamic_stream = np.random.SeedSequence(
                 [seed, k, graph_id]).spawn(3)
             graph = nx.fast_gnp_random_graph(M, k / (M - 1), seed=int(graph_stream.generate_state(1)[0]))
@@ -86,18 +86,18 @@ def write_csv(name, header, rows):
         writer.writerows(rows)
 
 
-def summarize(rows):
+def summarize(rows, graph_count=GRAPHS):
     summary = []
-    critical_t = t.ppf(.975, GRAPHS - 1)
+    critical_t = t.ppf(.975, graph_count - 1)
     for k in DEGREES:
         for x in PROBABILITIES:
             group = rows[(rows[:, 0] == k) & (rows[:, 2] == x)]
-            assert len(group) == GRAPHS
+            assert len(group) == graph_count
             static, dynamic = group[:, 5], group[:, 6]
             estimates = []
             for series in (static, dynamic, dynamic - static):
                 mean = series.mean()
-                margin = critical_t * series.std(ddof=1) / np.sqrt(GRAPHS)
+                margin = critical_t * series.std(ddof=1) / np.sqrt(graph_count)
                 estimates.extend((mean, mean - margin, mean + margin))
             summary.append((k, x, group[0, 3], *estimates))
     return np.array(summary)
