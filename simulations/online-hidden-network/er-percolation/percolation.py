@@ -31,6 +31,11 @@ for degree in DEGREES:
     grid.update(range(threshold - 10, threshold + 11, 2))
 SIMULATION_ORDER = np.array(original_grid + sorted(grid.difference(original_grid))) / 1000
 PROBABILITIES = np.sort(SIMULATION_ORDER)
+# Approximately even spacing, including the measured endpoints and all three thresholds.
+DISPLAY_PROBABILITIES = np.array([
+    .01, .06, .10, .125, .18, .22, .25, .30, .34, .38, .42, .46, .50,
+    .54, .58, .62, .66, .70, .74, .78, .82, .86, .90, .94, .99,
+])
 
 
 def largest_fraction(adjacency, online):
@@ -101,7 +106,7 @@ def summarize(rows):
 def draw(ax, summary, dynamic):
     mean_column = 6 if dynamic else 3
     for k, color in zip(DEGREES, ("#0072B2", "#D55E00", "#009E73")):
-        group = summary[summary[:, 0] == k]
+        group = summary[(summary[:, 0] == k) & np.isin(summary[:, 1], DISPLAY_PROBABILITIES)]
         threshold = 1.0 / k
         ax.axvline(threshold, color=color, ls=(0, (5, 3)), lw=1.35, zorder=1)
         ax.scatter(group[:, 1], group[:, mean_column], marker="s", s=32,
