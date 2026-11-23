@@ -1,4 +1,5 @@
 from pathlib import Path
+from fig5 import plot_figure5
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -39,26 +40,7 @@ def key(color,label,marker='',ls='-',fill=True):
     return Line2D([],[],color=color,label=label,marker=marker,linestyle=ls,linewidth=1.0,
                   markersize=4.5,markerfacecolor=color if fill else 'white',markeredgewidth=.7)
 
-fig,axes=canvas(2,'Online network size over time',6.85)
-legend(fig,[key(c,rf'$N_0={N}$') for c,N in zip(rgb,sizes)]+[key('#444444','Theoretical mean',ls='--')],4)
-rng=np.random.default_rng(2026112305)
-times=np.geomspace(.1,1e4,2100)
-for i,l in enumerate([.010,.020]):
-    for j,m in enumerate(rates):
-        ax=axes[i,j]; p=l/(l+m)
-        for c,N in zip(rgb,sizes):
-            states=np.full(20,N); path=[]
-            for dt in np.diff(times,prepend=0):
-                change=-np.expm1(-(l+m)*dt)
-                states=states-rng.binomial(states,(1-p)*change)+rng.binomial(N-states,p*change)
-                path.append(states[0])
-            ax.plot(times,path,c=c,lw=.8)
-            ax.plot(times,N*(p+(1-p)*np.exp(-(l+m)*times)),color='#414141',lw=.57,ls=(0,(4,4)))
-        ax.set(xscale='log',xlim=(.1,1e4),ylim=(0,6500),xlabel=r'$t$')
-        ax.set_xticks([.1,1,10,100,1000,10000]); ax.yaxis.set_major_locator(MultipleLocator(1000))
-        if j==0: ax.set_ylabel(r'$N(t)$')
-        head(ax,3*i+j,rf'$\lambda={l:.3f},\ \mu={m:.3f}$')
-save(fig,5)
+plot_figure5(out)
 
 fig,axes=canvas(1,'Stationary distribution of online network size',3.87)
 legend(fig,[key(c,rf'$\mu={m:.3f}$',z,'',False) for c,m,z in zip(rgb,rates,marks)]+[key('#555555','Binomial theory')],4)
