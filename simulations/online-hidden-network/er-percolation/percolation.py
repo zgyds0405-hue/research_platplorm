@@ -23,7 +23,14 @@ grid = {10, 990, *range(25, 1000, 25)}
 for degree in DEGREES:
     threshold = 1000 // degree
     grid.update(range(threshold - 30, threshold + 31, 5))
-PROBABILITIES = np.array(sorted(grid)) / 1000
+# Visit the original grid first so its seeded samples are exactly reproducible.
+original_grid = sorted(grid)
+grid.update(range(10, 991, 10))
+for degree in DEGREES:
+    threshold = 1000 // degree
+    grid.update(range(threshold - 10, threshold + 11, 2))
+SIMULATION_ORDER = np.array(original_grid + sorted(grid.difference(original_grid))) / 1000
+PROBABILITIES = np.sort(SIMULATION_ORDER)
 
 
 def largest_fraction(adjacency, online):
@@ -51,7 +58,7 @@ def simulate():
             adj = nx.to_scipy_sparse_array(graph, format="csr", dtype=np.int8)
             static = np.random.default_rng(static_stream)
             dynamic = np.random.default_rng(dynamic_stream)
-            for x in PROBABILITIES:
+            for x in SIMULATION_ORDER:
                 activation = MU * x / (1 - x)
                 stationary = activation / (activation + MU)
                 online = np.ones(M, dtype=bool)
@@ -92,22 +99,22 @@ def summarize(rows):
 
 
 def draw(ax, summary, dynamic):
-    for k, color, marker in zip(DEGREES, ("#0072B2", "#D55E00", "#009E73"), ("o", "s", "^")):
+    mean_column = 6 if dynamic else 3
+    for k, color in zip(DEGREES, ("#0072B2", "#D55E00", "#009E73")):
         group = summary[summary[:, 0] == k]
-        x = group[:, 1]
-        start = 6 if dynamic else 3
-        mean, lower, upper = group[:, start:start + 3].T
-        ax.fill_between(x, lower, upper, color=color, alpha=.17, linewidth=0)
-        ax.plot(x, mean, c=color, marker=marker, markevery=5, ms=3.4, mfc="white", mew=.85,
-                lw=1.25, label=f"$k={k}$")
+        threshold = 1.0 / k
+        ax.axvline(threshold, color=color, ls=(0, (5, 3)), lw=1.35, zorder=1)
+        ax.scatter(group[:, 1], group[:, mean_column], marker="s", s=32,
+                   facecolors="none", edgecolors=color, linewidths=1.0, zorder=2,
+                   label=rf"$k={k},\quad p_c={threshold:.3f}$")
     ax.set(xlim=(0, 1), ylim=(0, 1),
            xlabel="Stationary online probability, $p_*$" if dynamic else "Retention probability, $p$",
            ylabel="Largest component, $L_1/M$")
     ax.xaxis.set_major_locator(MultipleLocator(.2))
     ax.yaxis.set_major_locator(MultipleLocator(.2))
     ax.set_axisbelow(True)
-    ax.grid(axis="y", color="#dddddd", linewidth=.45)
-    ax.legend(loc="upper left", frameon=False, fontsize=8)
+    ax.margins(x=0)
+    ax.legend(loc="lower right", frameon=False, fontsize=9, labelspacing=.6)
 
 
 def export(summary):
@@ -118,8 +125,8 @@ def export(summary):
                          "axes.linewidth":.65, "svg.fonttype":"none", "pdf.fonttype":42})
     titles = ("Static site percolation", r"Dynamic activation ($\mu=0.01$)")
     for stem, kinds in [("comparison", (0, 1)), ("static", (0,)), ("dynamic", (1,))]:
-        width = 7.6 if len(kinds) == 2 else 3.9
-        fig, axes = plt.subplots(1, len(kinds), figsize=(width, 3.35), squeeze=False,
+        width = 14.0 if len(kinds) == 2 else 7.0
+        fig, axes = plt.subplots(1, len(kinds), figsize=(width, 4.65), squeeze=False,
                                  layout="constrained")
         for ax, kind in zip(axes.flat, kinds):
             draw(ax, summary, kind)
